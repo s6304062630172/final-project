@@ -40,7 +40,7 @@ export default function Editquotation() {
     const hanldeSubmit = (event) => {
         event.preventDefault();
         
-        axios.put(`http://localhost:3001/updatequ/${no_quotation}` , { title_quotation,phone_admin,address_user,phone_admin,date_,annotation,id_tax_user,id_tax_admin,email }) 
+        axios.put(`http://localhost:3001/updatequ/${no_quotation}` , { title_quotation,phone_admin,address_user,phone_user,date_,annotation,id_tax_user,id_tax_admin,email }) 
         .then(res=>{
             if(res.data.updated){
                 navigate('/quotation')

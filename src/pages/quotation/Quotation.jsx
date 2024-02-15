@@ -174,6 +174,12 @@ export default function Quotation() {
                     <p>No: {selectedQuotation.no_quotation}</p>
                     <p>Title: {selectedQuotation.title_quotation}</p>
                     <p>Date: {selectedQuotation.date_}</p>
+                    <p>หมายเลขเสียภาษีของลูกค้า: {selectedQuotation.id_tax_user}</p>
+                    <p>หมายเลขเสียภาษีของพนักงาน {selectedQuotation.id_tax_admin}</p>
+                    <p>หมายเลขโทรศัพท์แอดมิน: {selectedQuotation.phone_admin}</p>
+                    <p>หมายเลขโทรศัพท์ลูกค้า: {selectedQuotation.phone_user}</p>
+                    <p>ที่อยู่: {selectedQuotation.address_user}</p>
+                    <p>อีเมล์: {selectedQuotation.email}</p>
                     {/* เพิ่มปุ่มปิดหน้าต่าง */}
                     <button onClick={() => setSelectedQuotation(null)}>Close</button>
                 </Model>
