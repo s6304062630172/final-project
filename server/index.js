@@ -83,10 +83,10 @@ app.get('/editproduct/:product_id',(req,res)=>{
 
 app.put('/update/:product_id',(req,res)=>{
   
-  const sql = "UPDATE product SET product_name = ? WHERE product_id =?"
+  const sql = "UPDATE product SET product_name = ? , product_type = ? , product_brand = ? , product_price = ? , product_number =? WHERE product_id =?"
   
   const product_id =req.params.product_id;
-  db.query(sql,[req.body.product_name,product_id],(err,result)=>{
+  db.query(sql,[req.body.product_name,req.body.product_type,req.body.product_brand,req.body.product_price,req.body.product_number,product_id],(err,result)=>{
     if(err) return res.json("error") 
     return res.json({updated: true})
   })  
@@ -189,10 +189,10 @@ app.get('/editquotation/:no_quotation',(req,res)=>{
 
 app.put('/updatequ/:no_quotation',(req,res)=>{
   
-  const sql = "UPDATE quotation SET title_quotation = ? WHERE no_quotation =?"
+  const sql = "UPDATE quotation SET title_quotation = ? , date_ = ?,id_tax_user = ?,id_tax_admin = ?,annotation = ?,phone_admin = ?,phone_user = ?,address_user = ?,email = ? WHERE no_quotation =?"
   
   const no_quotation =req.params.no_quotation;
-  db.query(sql,[req.body.title_quotation,no_quotation],(err,result)=>{
+  db.query(sql,[req.body.title_quotation,req.body.date_,req.body.id_tax_user,req.body.phone_admin,req.body.annotation,req.body.phone_admin,req.body.phone_user,req.body.address_user,req.body.email,no_quotation],(err,result)=>{
     if(err) return res.json("error") 
     return res.json({updated: true})
   })  
@@ -262,10 +262,10 @@ app.get('/editemployee/:id',(req,res)=>{
 
 app.put('/updateemployee/:id',(req,res)=>{
   
-  const sql = "UPDATE employee SET employee_name = ? WHERE id =?"
+  const sql = "UPDATE employee SET employee_name = ?,employee_surname = ?,employee_phone = ?,employee_position = ? WHERE id =?"
   
   const id =req.params.id;
-  db.query(sql,[req.body.employee_name,id],(err,result)=>{
+  db.query(sql,[req.body.employee_name,req.body.employee_surname,req.body.employee_phone,req.body.employee_position,id],(err,result)=>{
     if(err) return res.json("error") 
     return res.json({updated: true})
   })  
