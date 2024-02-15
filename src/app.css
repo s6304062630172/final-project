@@ -1,0 +1,17 @@
+*
+{
+    margin: 0px;
+
+}
+.main
+{
+    display: flex;
+    margin: 0px;
+   
+}
+.other
+{
+    flex: 4;
+    background-color: rgb(202, 213, 250);
+   
+}
