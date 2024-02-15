@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import Model from 'react-modal'
 import TextField from '@mui/material/TextField';
 import "./employee.css";
+import { Link } from 'react-router-dom'
 
 
 export default function Employee() {
@@ -69,22 +70,35 @@ export default function Employee() {
     return (
         <div >
             <h3>Employee manage</h3>
-            {employeeList.map((val, key) => {
-                return (
+       
+<table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>Surname</th>
+                        <th>Position</th>
+                 
+                    </tr>
+                </thead>
+                <tbody>
+                    {employeeList.map((val, key) => {
+                        return (
+                            <tr>
+                                <td>{val.id}</td>
+                                <td>{val.employee_name}</td>
+                                <td>{val.employee_surname}</td>
+                                <td>{val.employee_position}</td>
+                                <Link to={`/Editemployee/${val.id}`} type="button" class="btn btn-dark" ><Edit /></Link>
+                                <button type="button" class="btn btn-danger" variant="outlined" color="error" onClick={() => { deleteemployee(val.id) }}><Delete /></button>
 
-                    <div className='employee_table' key={key}>
-                        <p> ID: {val.id}</p>
-                        <p> Name: {val.employee_name}</p>
-                        <p> Surname: {val.employee_surname}</p>
-                        <p> Position: {val.employee_position}</p>
-                        <p className='button' onClick={() => { deleteemployee(val.id) }}><Delete />Delete</p>
-                        <p className='button' onClick={() => { setvisible(true); setvisible(val.id); }} ><Edit />Edit</p>
-                    </div>
+                            </tr>
+                        )
 
+                    })}
 
-                )
-
-            })}
+                </tbody>
+            </table>
 
             <p className='add' onClick={() => setvisible(true)}> <Add />ADD</p>
             <Model id='Model' isOpen={visible}>
@@ -120,8 +134,6 @@ export default function Employee() {
                
               
             </Model>
-        
-            
         </div>
 
 

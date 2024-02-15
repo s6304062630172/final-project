@@ -8,22 +8,14 @@ h3
     margin: 50px;
     
 }
-.employee_table
-{
-    background-color: rgb(190, 162, 255);
-    display: flex;
-    border-radius: 30px;
-    margin: 10px;
-    padding: 40px;
 
-}
-.button
+
+.img
 {
-    cursor: pointer;
-    text-align: center;
     display: flex;
-    
+    align-items: center;
 }
+
 .add
 {
     cursor: pointer;
@@ -32,7 +24,7 @@ h3
     background-color: rgb(172, 172, 250);
     padding: 10px;
     border-radius: 30px;
-    float: right;
+    
     margin-right: 30px;
 }
 .close
@@ -40,19 +32,15 @@ h3
     float: right;
     margin-right: 30px;
 }
-.block1
-{
-    display: inline;
-    margin: 30px;
 
-}
-.block2
+#Model
 {
-    display: inline;
-    margin: 30px;
-
+    width: 800px;
+    height: 500px;
+    margin-left: 600px;
+   
+    
 }
-.form
-{
-    display: flex;
+#ADD{
+ 
 }

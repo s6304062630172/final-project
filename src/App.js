@@ -7,6 +7,8 @@ import Editproduct from "./pages/product/Editproduct";
 
 import "./app.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Editquotation from "./pages/quotation/Editquotation";
+import Editemployee from "./pages/employee/Editemployee";
 
 
 
@@ -26,6 +28,8 @@ function App() {
               <Route path="Employee" element={<Employee />} />
               <Route path="Quotation" element={<Quotation />} />
               <Route path="/Editproduct/:product_id" element={<Editproduct />} />
+              <Route path="/Editquotation/:no_quotation" element={<Editquotation />} />
+              <Route path="/Editemployee/:id" element={<Editemployee />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -66,6 +66,9 @@ app.delete('/delete/:product_id', (req, res) => {
     }
   })
 })
+
+//Edit
+
 app.get('/editproduct/:product_id',(req,res)=>{
   const product_id = req.params.product_id
   db.query("SELECT * FROM product WHERE product_id = ?",product_id,(err,result)=>{
@@ -170,6 +173,32 @@ app.delete('/delete/quotation/:no_quotation', (req, res) => {
   })
 })
 
+
+//Edit
+app.get('/editquotation/:no_quotation',(req,res)=>{
+  const no_quotation = req.params.no_quotation
+  db.query("SELECT * FROM quotation WHERE no_quotation = ?",no_quotation,(err,result)=>{
+    if (err){
+      console.log(err)
+    }else{
+      res.send(result)
+    }
+  })
+  
+})
+
+app.put('/updatequ/:no_quotation',(req,res)=>{
+  
+  const sql = "UPDATE quotation SET title_quotation = ? WHERE no_quotation =?"
+  
+  const no_quotation =req.params.no_quotation;
+  db.query(sql,[req.body.title_quotation,no_quotation],(err,result)=>{
+    if(err) return res.json("error") 
+    return res.json({updated: true})
+  })  
+
+})
+
 ////////////////Employee////////////////
 
 app.get('/get/employee', (req, res) => {
@@ -207,8 +236,6 @@ app.post("/post/employee", (req, res) => {
   );
 });
 
-
-
 app.delete('/delete/employee/:id', (req, res) => {
   const id = req.params.id;
   db.query("DELETE FROM employee WHERE id = ?", id, (err, result) => {
@@ -218,6 +245,31 @@ app.delete('/delete/employee/:id', (req, res) => {
       res.send(result);
     }
   })
+})
+
+//Edit
+app.get('/editemployee/:id',(req,res)=>{
+  const id = req.params.id
+  db.query("SELECT * FROM employee WHERE id = ?",id,(err,result)=>{
+    if (err){
+      console.log(err)
+    }else{
+      res.send(result)
+    }
+  })
+  
+})
+
+app.put('/updateemployee/:id',(req,res)=>{
+  
+  const sql = "UPDATE employee SET employee_name = ? WHERE id =?"
+  
+  const id =req.params.id;
+  db.query(sql,[req.body.employee_name,id],(err,result)=>{
+    if(err) return res.json("error") 
+    return res.json({updated: true})
+  })  
+
 })
 
 app.listen('3001', () => {

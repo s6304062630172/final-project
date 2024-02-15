@@ -6,6 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useState, useEffect } from 'react';
 import Model from 'react-modal'
 import TextField from '@mui/material/TextField';
+import { Link } from 'react-router-dom';
 
 
 
@@ -85,59 +86,35 @@ export default function Quotation() {
 
     }
 
-    const editquotation = () => {
-        Axios.post("http://localhost:3001/edit", {
-            phone_admin: phone_admin,
-            address_user: address_user,
-            phone_user: phone_user,
-            date_: date_,
-            title_quotation: title_quotation,
-            annotation: annotation,
-            id_tax_user: id_tax_user,
-            id_tax_admin: id_tax_admin,
-            email:email
-        }).then(() => {
-            setquotationList([
-                ...quotationList,
-                {
-                    phone_admin: phone_admin,
-                    address_user: address_user,
-                    phone_user: phone_user,
-                    date_: date_,
-                    title_quotation: title_quotation,
-                    annotation: annotation,
-                    id_tax_user: id_tax_user,
-                    id_tax_admin: id_tax_admin,
-                    email:email
-                },
-            ]);
-        });
-    };
-
-
-
-
-
-
     return (
         <div >
             <h3>Quotation manage</h3>
-            {quotationList.map((val, key) => {
-                return (
+                    <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {quotationList.map((val, key) => {
+                        return (
+                            <tr>
+                                <td>{val.no_quotation}</td>
+                                <td>{val.title_quotation}</td>
+                                <td>{val.date_}</td>
+                                <Link to={`/Editquotation/${val.no_quotation}`} type="button" class="btn btn-dark" ><Edit /></Link>
+                                <button type="button" class="btn btn-danger" variant="outlined" color="error" onClick={() => { deletequotation(val.no_quotation) }}><Delete /></button>
+                                <button type="button" class="btn btn-danger" variant="outlined" color="error" onClick={() => { handleViewDetail(val)}}><VisibilityIcon /></button>
 
-                    <div className='quotation_table' key={key}>
-                        <p> No: {val.no_quotation}</p>
-                        <p> Title: {val.title_quotation}</p>
-                        <p> Date: {val.date_}</p>
-                        <p className='button' onClick={() => { deletequotation(val.no_quotation) }}><Delete />Delete</p>
-                        <p className='button' onClick={() => { setvisible(true); setvisible(val.no_quotation); }} ><Edit />Edit</p>
-                        <p className='button' onClick={() => handleViewDetail(val)}><VisibilityIcon/>View</p>
-                    </div>
+                            </tr>
+                        )
 
+                    })}
 
-                )
-
-            })}
+                </tbody>
+            </table>
 
             <p className='add' onClick={() => setvisible(true)}> <Add />ADD</p>
             <Model id='Model' isOpen={visible}>
