@@ -13,6 +13,25 @@ import jsPDF from "jspdf";
 
 
 export default function Quotation() {
+    
+    //แสดงdropdown แบรนด์
+    const [product_brand, setproduct_brand] = useState([]);
+
+    useEffect(() => {
+        fetchproduct_brand();
+      }, []);
+    
+      const fetchproduct_brand = async () => {
+        try {
+          const response = await fetch('http://localhost:3001/product_brand');
+          const data = await response.json();
+          setproduct_brand(data);
+        } catch (error) {
+          console.error('Error fetching product brands:', error);
+        }
+      };
+
+
     const [selectedQuotation, setSelectedQuotation] = useState(null);
 
     // เพิ่มฟังก์ชัน handleViewDetail เพื่อแสดงรายละเอียดใบเสนอราคาที่เลือก
@@ -222,7 +241,17 @@ export default function Quotation() {
                     <p>วันที่: {selectedQuotation.date_}</p>
                     <p>หมายเหตุ: {selectedQuotation.annotation}</p>
                     </div>
+
+                    <div>
+                    {/* เแสดง dropdown product_brand,product_type,product_name */}
+                 <select>
+                    <option value="">Select Brand</option>{product_brand.map((brand, index) => (
+                    <option key={index} value={brand.product_brand}>{brand.product_brand}</option>
+                        ))}
+                </select>
+                    </div>
                  
+       
                     </div>
                     </div>
                     {/* เพิ่มปุ่มปิดหน้าต่าง */}

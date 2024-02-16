@@ -199,6 +199,18 @@ app.put('/updatequ/:no_quotation',(req,res)=>{
 
 })
 
+// API Endpoint เพื่อดึงข้อมูล product_brands จากตาราง product
+app.get('/product_brand', (req, res) => {
+  const sql = 'SELECT DISTINCT product_brand FROM product'; // Query SQL สำหรับดึงข้อมูล product_brands
+  db.query(sql, (error, results, fields) => { // ใช้ db.query แทน connection.query
+    if (error) {
+      console.error('Error fetching product brands:', error);
+      res.status(500).send('Error fetching product brands');
+      return;
+    }
+    res.json(results); // ส่งข้อมูล product_brands กลับไปยัง React ในรูปแบบ JSON
+  });
+});
 ////////////////Employee////////////////
 
 app.get('/get/employee', (req, res) => {
