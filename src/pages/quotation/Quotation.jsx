@@ -1,5 +1,5 @@
 import "./quotation.css";
-import React from 'react'
+import React, { useRef } from 'react'
 import Axios from 'axios'
 import { Delete, Edit, Add, Close } from "@mui/icons-material"
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react';
 import Model from 'react-modal'
 import TextField from '@mui/material/TextField';
 import { Link } from 'react-router-dom';
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 
 
@@ -18,6 +20,34 @@ export default function Quotation() {
         setSelectedQuotation(quotation);
     };
 
+    //เพิ่ม pdf
+    const pdfRef = useRef();
+
+    //ดาวน์โหลด pdf
+    const downloadPDF = () => {
+        const input = pdfRef.current;
+    
+        // ให้ html2canvas แปลงส่วนที่ต้องการสร้างเป็นรูปภาพ
+        html2canvas(input).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+    
+            // สร้างเอกสาร PDF
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const imgX = (pdfWidth - (imgWidth * ratio)) / 2;
+            const imgY = 30;
+    
+            // เพิ่มรูปภาพลงในเอกสาร PDF
+            pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+    
+            // ดาวน์โหลดไฟล์ PDF
+            pdf.save('quotation.pdf');
+        });
+    };
     const [visible, setvisible] = useState(false)
     const [phone_admin, setphone_admin] = useState("");
     const [address_user, setaddress_user] = useState("");
@@ -166,29 +196,41 @@ export default function Quotation() {
                
               
             </Model>
+           
                  {/* หน้าต่างแสดงรายละเอียดใบเสนอราคา */}
                  {selectedQuotation && (
                 <Model isOpen={true}>
-                    <h1>Quotation Detail</h1>
-                    {/* แสดงรายละเอียดใบเสนอราคา */}
-                    <p>No: {selectedQuotation.no_quotation}</p>
-                    <p>Title: {selectedQuotation.title_quotation}</p>
-                    <p>Date: {selectedQuotation.date_}</p>
-                    <p>หมายเลขเสียภาษีของลูกค้า: {selectedQuotation.id_tax_user}</p>
+                     <div className="box" ref={pdfRef}>
+                    <h1 className="topic">ใบเสนอราคา</h1>
+                    <div className="blocks-container">
+                    <div className="block3">
+                    <p>363/137 ซอยพหลโยธิน 52 แยก24 ถนนพหลโยธิน </p>
+                    <p>แขวงคลองถนนเขตสายไหม กรุงเทพฯ 10220</p>
                     <p>หมายเลขเสียภาษีของพนักงาน {selectedQuotation.id_tax_admin}</p>
                     <p>หมายเลขโทรศัพท์แอดมิน: {selectedQuotation.phone_admin}</p>
-                    <p>หมายเลขโทรศัพท์ลูกค้า: {selectedQuotation.phone_user}</p>
+                    <br></br>
+                    <p>ลูกค้า</p>
                     <p>ที่อยู่: {selectedQuotation.address_user}</p>
+                    <p>หมายเลขเสียภาษีของลูกค้า: {selectedQuotation.id_tax_user}</p>
+                    <p>หมายเลขโทรศัพท์ลูกค้า: {selectedQuotation.phone_user}</p>
                     <p>อีเมล์: {selectedQuotation.email}</p>
+                    </div>
+
+                    <div className="block4">
+                    <p>เลขที่ใบเสนอราคา: {selectedQuotation.no_quotation}</p>
+                    <p>ชื่องาน: {selectedQuotation.title_quotation}</p>
+                    <p>วันที่: {selectedQuotation.date_}</p>
+                    <p>หมายเหตุ: {selectedQuotation.annotation}</p>
+                    </div>
+                 
+                    </div>
+                    </div>
                     {/* เพิ่มปุ่มปิดหน้าต่าง */}
                     <button onClick={() => setSelectedQuotation(null)}>Close</button>
+                    {/* เพิ่มปุ่มdownload */}
+                    <button className="btn btn-primary" onClick={downloadPDF}>Download PDF</button>
                 </Model>
             )}
-
-
-
-
-
         </div>
 
 

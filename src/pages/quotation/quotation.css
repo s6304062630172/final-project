@@ -44,3 +44,34 @@ h3
 #ADD{
  
 }
+.Model {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .blocks-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .topic{
+    text-align: center; /* จัดหัวข้อให้อยู่ตรงกลาง */
+    font-weight: bold; /* ทำให้ตัวอักษรหนาขึ้น */
+  }
+  
+  .block3 {
+    width: 48%;
+    margin-left: 10%; /* ให้ block1 มี margin ด้านขวาเพื่อขยับออกจากขอบกระดาษ */
+  }
+  
+  .block4 {
+    width: 48%; /* ให้ block2 มีความกว้าง 48% */
+    margin-left: 20%; /* ให้ block1 มี margin ด้านขวาเพื่อขยับออกจากขอบกระดาษ */
+    margin-right: 3%;
+  }
+
+  .box{
+    font-size: 22px; /* ปรับขนาดฟ้อนให้ใหญ่ขึ้น */
+  }

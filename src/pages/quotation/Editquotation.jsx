@@ -31,9 +31,6 @@ export default function Editquotation() {
         })
         .catch(err => console.log(err))
 
-        
-
-
     },[])
     const navigate =  useNavigate();
 
