@@ -75,3 +75,6 @@ h3
   .box{
     font-size: 22px; /* ปรับขนาดฟ้อนให้ใหญ่ขึ้น */
   }
+  hr.style1{
+    border-top: 1px solid #8c8b8b;
+  }

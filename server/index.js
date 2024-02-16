@@ -145,11 +145,13 @@ app.post("/post/create", (req, res) => {
   const phone_user = req.body.phone_user;
   const address_user = req.body.address_user;
   const email = req.body.email;
+  const quotation_product_type = req.body.quotation_product_type;
+  const quotation_product_brand = req.body.quotation_product_brand;
 
 
   db.query(
-    "INSERT INTO quotation (title_quotation,date_,id_tax_user,id_tax_admin,annotation,phone_admin,phone_user,address_user,email) VALUES(?,?,?,?,?,?,?,?,?) ",
-    [title_quotation, date_, id_tax_user, id_tax_admin, annotation, phone_admin, phone_user, address_user, email],
+    "INSERT INTO quotation (title_quotation,date_,id_tax_user,id_tax_admin,annotation,phone_admin,phone_user,address_user,email,quotation_product_type,quotation_product_brand) VALUES(?,?,?,?,?,?,?,?,?,?.?) ",
+    [title_quotation, date_, id_tax_user, id_tax_admin, annotation, phone_admin, phone_user, address_user, email,quotation_product_type,quotation_product_brand],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -160,7 +162,30 @@ app.post("/post/create", (req, res) => {
   );
 });
 
+ // API Endpoint เพื่อดึงข้อมูล product_brands จากตาราง product
+app.get('/product_brand', (req, res) => {
+  const sql = 'SELECT DISTINCT product_brand_name FROM product_brand'; // Query SQL สำหรับดึงข้อมูล product_brands
+  db.query(sql, (error, results, fields) => { // ใช้ db.query แทน connection.query
+    if (error) {
+      console.error('Error fetching product brands:', error);
+      res.status(500).send('Error fetching product brands');
+      return;
+    }
+    res.json(results); // ส่งข้อมูล product_brands กลับไปยัง React ในรูปแบบ JSON
+  });
+});
 
+app.get('/product_type', (req, res) => {
+  const sql = 'SELECT DISTINCT product_type_name FROM product_type'; 
+  db.query(sql, (error, results, fields) => { 
+    if (error) {
+      console.error('Error fetching product types:', error);
+      res.status(500).send('Error fetching product types');
+      return;
+    }
+    res.json(results); 
+  });
+});
 
 app.delete('/delete/quotation/:no_quotation', (req, res) => {
   const no_quotation = req.params.no_quotation;
@@ -199,18 +224,8 @@ app.put('/updatequ/:no_quotation',(req,res)=>{
 
 })
 
-// API Endpoint เพื่อดึงข้อมูล product_brands จากตาราง product
-app.get('/product_brand', (req, res) => {
-  const sql = 'SELECT DISTINCT product_brand FROM product'; // Query SQL สำหรับดึงข้อมูล product_brands
-  db.query(sql, (error, results, fields) => { // ใช้ db.query แทน connection.query
-    if (error) {
-      console.error('Error fetching product brands:', error);
-      res.status(500).send('Error fetching product brands');
-      return;
-    }
-    res.json(results); // ส่งข้อมูล product_brands กลับไปยัง React ในรูปแบบ JSON
-  });
-});
+
+
 ////////////////Employee////////////////
 
 app.get('/get/employee', (req, res) => {

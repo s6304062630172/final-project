@@ -14,26 +14,40 @@ import jsPDF from "jspdf";
 
 export default function Quotation() {
     
-    //แสดงdropdown แบรนด์
-    const [product_brand, setproduct_brand] = useState([]);
+      //แสดงdropdown แบรนด์
+      const [product_brand_name, setproduct_brand_name] = useState([]);
+        useEffect(() => {
+          fetchproduct_brand_name();
+        }, []);
+      
+        const fetchproduct_brand_name = async () => {
+          try {
+            const response = await fetch('http://localhost:3001/product_brand');
+            const data = await response.json();
+            setproduct_brand_name(data);
+          } catch (error) {
+            console.error('Error fetching product brands:', error);
+          }
+        };
 
-    useEffect(() => {
-        fetchproduct_brand();
-      }, []);
+        //แสดงdropdown type
+        const [productTypeNames, setProductTypeNames] = useState([]);
+
+        useEffect(() => {
+            fetchProductTypeNames();
+        }, []);
     
-      const fetchproduct_brand = async () => {
-        try {
-          const response = await fetch('http://localhost:3001/product_brand');
-          const data = await response.json();
-          setproduct_brand(data);
-        } catch (error) {
-          console.error('Error fetching product brands:', error);
-        }
-      };
-
+        const fetchProductTypeNames = async () => {
+            try {
+                const response = await fetch('http://localhost:3001/product_type');
+                const data = await response.json();
+                setProductTypeNames(data);
+            } catch (error) {
+                console.error('Error fetching product types:', error);
+            }
+        };
 
     const [selectedQuotation, setSelectedQuotation] = useState(null);
-
     // เพิ่มฟังก์ชัน handleViewDetail เพื่อแสดงรายละเอียดใบเสนอราคาที่เลือก
     const handleViewDetail = (quotation) => {
         setSelectedQuotation(quotation);
@@ -77,6 +91,8 @@ export default function Quotation() {
     const [id_tax_user, setid_tax_user] = useState("");
     const [id_tax_admin, setid_tax_admin] = useState("");
     const [email, setemail] = useState("");
+    const [quotation_product_brand, setquotation_product_brand] = useState([]);
+    const [quotation_product_type, setquotation_product_type] = useState([]);
     const [quotationList, setquotationList] = useState([]);
 
     const getquotation = () => {
@@ -90,8 +106,9 @@ export default function Quotation() {
         getquotation();
     }, []);
 
+
     const addQuotation = () => {
-        if (phone_admin == "" || address_user == "" || phone_user == "" || date_ == "" || title_quotation == "" || annotation == "" || id_tax_user == "" || id_tax_admin == "" || email == "") {
+        if (phone_admin == "" || address_user == "" || phone_user == "" || date_ == "" || title_quotation == "" || annotation == "" || id_tax_user == "" || id_tax_admin == "" || email == ""|| quotation_product_type == "" || quotation_product_brand =="") {
 
         } else {
             Axios.post("http://localhost:3001/post/create", {
@@ -103,7 +120,9 @@ export default function Quotation() {
                 annotation: annotation,
                 id_tax_user: id_tax_user,
                 id_tax_admin: id_tax_admin,
-                email:email
+                email:email,
+                quotation_product_type: quotation_product_type,
+                quotation_product_brand: quotation_product_brand
             }).then(() => {
 
                 setquotationList([
@@ -117,7 +136,9 @@ export default function Quotation() {
                         annotation: annotation,
                         id_tax_user: id_tax_user,
                         id_tax_admin: id_tax_admin,
-                        email:email
+                        email:email,
+                        quotation_product_type: quotation_product_type,
+                        quotation_product_brand: quotation_product_brand
                     },
                 ]);
             });
@@ -209,12 +230,28 @@ export default function Quotation() {
                             <p>Annotation</p>
                             <TextField id="outlined-basic" label="Annotation" variant="outlined" onChange={(event) => { setannotation(event.target.value) }} />
                         </div>
+                        <div>
+                    {/* เแสดง dropdown product_brand,product_type,product_name */}
+                    <select>
+                    <option value="">Select Brand</option>{product_brand_name.map((brand, index) => (
+                    <option key={index} value={brand.product_brand_name}>{brand.product_brand_name}</option>
+                        ))}
+                    </select>
+                    </div>
+                    <div>
+                <select>
+                <option value="">Select Type</option>
+                {productTypeNames.map((type, index) => (
+                    <option key={index} value={type.product_type_name}>{type.product_type_name}</option>
+                ))}
+                </select>
+                </div>
                     </div>
                     <button onClick={addQuotation} class="btn btn-primary" type="submit">ADD</button>
                 </form>
                
               
-            </Model>
+                </Model>
            
                  {/* หน้าต่างแสดงรายละเอียดใบเสนอราคา */}
                  {selectedQuotation && (
@@ -241,18 +278,8 @@ export default function Quotation() {
                     <p>วันที่: {selectedQuotation.date_}</p>
                     <p>หมายเหตุ: {selectedQuotation.annotation}</p>
                     </div>
-
-                    <div>
-                    {/* เแสดง dropdown product_brand,product_type,product_name */}
-                 <select>
-                    <option value="">Select Brand</option>{product_brand.map((brand, index) => (
-                    <option key={index} value={brand.product_brand}>{brand.product_brand}</option>
-                        ))}
-                </select>
                     </div>
-                 
-       
-                    </div>
+                    <hr></hr>
                     </div>
                     {/* เพิ่มปุ่มปิดหน้าต่าง */}
                     <button onClick={() => setSelectedQuotation(null)}>Close</button>
