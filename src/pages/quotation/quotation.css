@@ -63,7 +63,7 @@ h3
   
   .block3 {
     width: 48%;
-    margin-left: 10%; /* ให้ block1 มี margin ด้านขวาเพื่อขยับออกจากขอบกระดาษ */
+    margin-left: 5%; /* ให้ block1 มี margin ด้านขวาเพื่อขยับออกจากขอบกระดาษ */
   }
   
   .block4 {
@@ -77,4 +77,21 @@ h3
   }
   hr.style1{
     border-top: 1px solid #8c8b8b;
+  }
+
+  .logo{ /* ขนาดโลโก้ */
+    width: 350px; 
+    height: auto; 
+    margin-bottom: 6%;
+  }
+
+  table.detail {
+    border-collapse: collapse;
+    width: 100%; /* หรือคุณสามารถกำหนดขนาดตามที่ต้องการ */
+  }
+  
+  table.detail th,
+  table.detail td {
+    border: 1px solid black; /* กำหนดเส้นขอบ */
+    padding: 8px; /* กำหนดระยะห่างภายในเซลล์ */
   }

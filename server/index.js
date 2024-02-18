@@ -187,6 +187,22 @@ app.get('/product_type', (req, res) => {
   });
 });
 
+// แสดงรายละเอียดสินค้าในใบเสนอราคา
+app.get('/quotation_detail/:no_quotation', (req, res) => {
+  const no_quotation = req.params.no_quotation;
+  const sql = 'SELECT quotation.*, product.product_name, product.product_price, product.product_btu FROM quotation JOIN product ON quotation.product_id = product.product_id WHERE quotation.no_quotation = ?';
+  db.query(sql, [no_quotation], (error, results, fields) => {
+      if (error) {
+          console.error('Error fetching product:', error);
+          res.status(500).send('Error fetching product');
+          return;
+      }
+      res.json(results);
+  });
+});
+
+
+//ลบ
 app.delete('/delete/quotation/:no_quotation', (req, res) => {
   const no_quotation = req.params.no_quotation;
   db.query("DELETE FROM quotation WHERE no_quotation = ?", no_quotation, (err, result) => {

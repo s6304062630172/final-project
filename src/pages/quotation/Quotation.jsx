@@ -47,10 +47,28 @@ export default function Quotation() {
             }
         };
 
-    const [selectedQuotation, setSelectedQuotation] = useState(null);
+   
+  
+
+   // const [selectedQuotation, setSelectedQuotation] = useState(null);
     // เพิ่มฟังก์ชัน handleViewDetail เพื่อแสดงรายละเอียดใบเสนอราคาที่เลือก
-    const handleViewDetail = (quotation) => {
+   // const handleViewDetail = (quotation) => {
+   //     setSelectedQuotation(quotation);
+   // };
+    //เพิ่ม
+
+    const [selectedQuotation, setSelectedQuotation] = useState(null);
+    const [products, setProducts] = useState([]);
+
+    const handleViewDetail = async (quotation) => {
         setSelectedQuotation(quotation);
+        try {
+            const response = await fetch(`http://localhost:3001/quotation_detail/${quotation.no_quotation}`);
+            const data = await response.json();
+            setProducts(data);
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        }
     };
 
     //เพิ่ม pdf
@@ -91,6 +109,9 @@ export default function Quotation() {
     const [id_tax_user, setid_tax_user] = useState("");
     const [id_tax_admin, setid_tax_admin] = useState("");
     const [email, setemail] = useState("");
+    const [product_id, setproduct_id]= useState("");
+     const [product_name, setproduct_name]= useState("");
+ 
     const [quotation_product_brand, setquotation_product_brand] = useState([]);
     const [quotation_product_type, setquotation_product_type] = useState([]);
     const [quotationList, setquotationList] = useState([]);
@@ -108,7 +129,7 @@ export default function Quotation() {
 
 
     const addQuotation = () => {
-        if (phone_admin == "" || address_user == "" || phone_user == "" || date_ == "" || title_quotation == "" || annotation == "" || id_tax_user == "" || id_tax_admin == "" || email == ""|| quotation_product_type == "" || quotation_product_brand =="") {
+        if (phone_admin == "" || address_user == "" || phone_user == "" || date_ == "" || title_quotation == "" || annotation == "" || id_tax_user == "" || id_tax_admin == "" || email == ""|| quotation_product_type == "" || quotation_product_brand ==""|| product_id == "" ) {
 
         } else {
             Axios.post("http://localhost:3001/post/create", {
@@ -121,6 +142,7 @@ export default function Quotation() {
                 id_tax_user: id_tax_user,
                 id_tax_admin: id_tax_admin,
                 email:email,
+                product_id:product_id,
                 quotation_product_type: quotation_product_type,
                 quotation_product_brand: quotation_product_brand
             }).then(() => {
@@ -137,6 +159,7 @@ export default function Quotation() {
                         id_tax_user: id_tax_user,
                         id_tax_admin: id_tax_admin,
                         email:email,
+                        product_id:product_id,
                         quotation_product_type: quotation_product_type,
                         quotation_product_brand: quotation_product_brand
                     },
@@ -153,9 +176,7 @@ export default function Quotation() {
                 })
             )
         })
-
     }
-
     return (
         <div >
             <h3>Quotation manage</h3>
@@ -249,17 +270,16 @@ export default function Quotation() {
                     </div>
                     <button onClick={addQuotation} class="btn btn-primary" type="submit">ADD</button>
                 </form>
-               
-              
                 </Model>
            
-                 {/* หน้าต่างแสดงรายละเอียดใบเสนอราคา */}
+                 {/* หน้าต่างแสดงรายละเอียดใบเสนอราคา >*/}
                  {selectedQuotation && (
                 <Model isOpen={true}>
                      <div className="box" ref={pdfRef}>
                     <h1 className="topic">ใบเสนอราคา</h1>
                     <div className="blocks-container">
                     <div className="block3">
+                    <img className="logo" src={require("./st.png")} alt="โลโก้ร้าน" />
                     <p>363/137 ซอยพหลโยธิน 52 แยก24 ถนนพหลโยธิน </p>
                     <p>แขวงคลองถนนเขตสายไหม กรุงเทพฯ 10220</p>
                     <p>หมายเลขเสียภาษีของพนักงาน {selectedQuotation.id_tax_admin}</p>
@@ -280,12 +300,33 @@ export default function Quotation() {
                     </div>
                     </div>
                     <hr></hr>
+
+                    <table className="detail">
+                 <thead>
+                     <tr>
+                         <th>รายการ</th>
+                         <th>ขนาด</th>
+                         <th>ราคา</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                 {products.map((val, index) => (
+            <tr key={index}>
+              <td>{val.product_name}</td>
+              <td>{val.product_btu}</td>
+              <td>{val.product_price}</td>
+            </tr>
+          ))}
+        </tbody>
+                 
+             </table>
                     </div>
                     {/* เพิ่มปุ่มปิดหน้าต่าง */}
                     <button onClick={() => setSelectedQuotation(null)}>Close</button>
                     {/* เพิ่มปุ่มdownload */}
                     <button className="btn btn-primary" onClick={downloadPDF}>Download PDF</button>
                 </Model>
+                
             )}
         </div>
 
